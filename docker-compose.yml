@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+
+  db:
+    platform: linux/x86_64
+    image: mysql
+    environment:
+      MYSQL_DATABASE: simulator
+      MYSQL_USER: franck
+      MYSQL_PASSWORD: franck
+      MYSQL_ROOT_PASSWORD: franck
