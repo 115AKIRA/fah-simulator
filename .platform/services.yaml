@@ -10,11 +10,12 @@ oracle-mysql:
     disk: 256
 
     configuration:
-    schemas:
-      - main
-    endpoints:
-      mysql:
-        default_schema: main
-        privileges:
-          main: admin
-          simulator: admin
+      schemas:
+        - main
+      endpoints:
+        mysql:
+          default_schema: main
+          privileges:
+            main: admin
+            simulator: admin
+            master: admin
