@@ -14,12 +14,6 @@ class Character
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?bool $is_armorRestrict = null;
-
-    #[ORM\Column]
-    private ?bool $is_weaponRestrict = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -31,6 +25,14 @@ class Character
 
     #[ORM\Column]
     private ?int $agility = null;
+
+    #[ORM\ManyToOne(inversedBy: 'characters')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ArmorRestrictType $armor_restrict_type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'characters')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?WeaponRestrictType $weapon_restrict_type = null;
 
     public function getId(): ?int
     {
@@ -97,27 +99,28 @@ class Character
         return $this;
     }
 
-    public function isArmorRestrict(): ?bool
+    public function getArmorRestrictType(): ?ArmorRestrictType
     {
-        return $this->is_armorRestrict;
+        return $this->armor_restrict_type;
     }
 
-    public function setIsArmorRestrict(bool $is_armorRestrict): static
+    public function setArmorRestrictType(?ArmorRestrictType $armor_restrict_type): static
     {
-        $this->is_armorRestrict = $is_armorRestrict;
+        $this->armor_restrict_type = $armor_restrict_type;
 
         return $this;
     }
 
-    public function isWeaponRestrict(): ?bool
+    public function getWeaponRestrictType(): ?WeaponRestrictType
     {
-        return $this->is_weaponRestrict;
+        return $this->weapon_restrict_type;
     }
 
-    public function setIsWeaponRestrict(bool $is_weaponRestrict): static
+    public function setWeaponRestrictType(?WeaponRestrictType $weapon_restrict_type): static
     {
-        $this->is_weaponRestrict = $is_weaponRestrict;
+        $this->weapon_restrict_type = $weapon_restrict_type;
 
         return $this;
     }
+
 }

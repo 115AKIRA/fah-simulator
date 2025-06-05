@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ troop.name }} fight {% endblock %}
+
+{% block body %}
+
+    <section>
+
+        <h2> {{ troop.name }} fight </h2>
+
+        <table class="fight-table">
+
+            <tbody>
+
+                <tr> 
+
+                    <th colspan="2">
+                
+                        <span> {{ troop.name }} </span>
+
+                    </th>
+                
+                </tr>
+
+                <tr>
+
+                    <th colspan="2">
+
+                        <img src="{{ troop.image }}">
+
+                    </th>
+
+                </tr>
+
+                <tr> 
+                
+                    <td> Phobia : </td>
+
+                    <td> todo </td>
+                
+                </tr>
+
+                <tr>
+
+                    <th colspan="2" class="darkred">
+
+                        <p> Items </p>
+
+                    </th>
+
+                </tr>
+
+                <tr>
+
+                    <td> Loot : </td>
+
+                    <td> todo </td>
+
+                </tr>
+
+                <tr>
+
+                    <td> Steal : </td>
+
+                    <td> todo </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <table class="stat-table">
+
+            <tbody>
+
+                <tr>
+
+                    <td> Body part </td>
+                    <td> HP </td>
+                    <td> Hard mode HP </td>
+                    <td> Blunt </td>
+                    <td> Slashing </td>
+                    <td> Piercing </td>
+                    <td> Fire </td>
+                    <td> Otherworldly </td>
+                    <td> Ev. Rate </td>
+                    <td> Magic Ev. </td>
+                    <td> Resistances </td>
+
+                </tr>
+
+                {% for limb in troop.limbs %}
+
+                    <tr>
+
+                        <td> {{limb.name}} </td>
+                        <td> 
+                            {% if "torso" in limb.name %}
+                                {{ ((limb.maxHP * ((100 - troop.getTorsoThreshhold())/100)) ~ "(" ~ limb.maxHP ~ ")") }}
+                            {% else %}
+                                {{ (limb.maxHP) }}
+
+                            {% endif %}
+                        </td>
+                        <td> 
+                            {% if "torso" in limb.name %}
+                                {{ ((limb.getHardMaxHP() * ((100 - troop.getTorsoThreshhold())/100)) ~ " (" ~ limb.getHardMaxHP() ~ ")") }}
+                            {% else %}
+                                {{ (limb.getHardMaxHP()) }}
+                            {% endif %}
+                        </td>
+                        <td> {{limb.getBluntRes() ~ '%'}} </td>
+                        <td> {{limb.getSlashingRes() ~ '%'}} </td>
+                        <td> {{limb.getPiercingRes() ~ '%'}} </td>
+                        <td> {{limb.getFireRes() ~ '%'}} </td>
+                        <td> {{limb.getOtherworldlyRes() ~ '%'}} </td>
+                        <td> {{limb.evasion ~ '%'}} </td>
+                        <td> {{limb.getMagicalEvasion() ~ '%'}} </td>
+                        <td> todo </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <table class="stat-table">
+
+            <tbody>
+
+                <tr>
+
+                    <td> Body part </td>
+                    <td> Skill </td>
+                    <td> Effect </td>
+                    <td> Condition </td>
+                    <td> Chance </td>
+                    <td> Success rate </td>
+
+                </tr>
+
+                {% for limb in troop.limbs %}
+                    
+                    {% for limbskill in limb.getLimbSkills() %}
+
+                        {% for skill in skills %}
+
+                            {% if skill.id == limbskill.getIdSkill().id %}
+
+                                <tr>
+
+                                    <td> {{limb.name}} </td>
+                                    <td> {{skill.name}} </td>
+                                    <td> {{skill.description}} </td>
+                                    <td> {{limbskill.getSkillTrigger()}} </td>
+                                    <td> 
+
+                                        todo
+                                    
+                                    </td>
+                                    <td> {{skill.getSuccessRate() ~ "%"}}  </td>
+
+                                </tr>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endfor %}
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+{% endblock %}

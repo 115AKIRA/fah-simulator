@@ -55,15 +55,27 @@ class Limb
     private Collection $troop;
 
     /**
-     * @var Collection<int, Effect>
+     * @var Collection<int, LimbEffect>
      */
-    #[ORM\ManyToMany(targetEntity: Effect::class)]
-    private Collection $effects;
+    #[ORM\OneToMany(targetEntity: LimbEffect::class, mappedBy: 'id_limb', orphanRemoval: true)]
+    private Collection $limbEffects;
+
+    /**
+     * @var Collection<int, LimbSkill>
+     */
+    #[ORM\OneToMany(targetEntity: LimbSkill::class, mappedBy: 'id_limb', orphanRemoval: true)]
+    private Collection $limbSkills;
 
     public function __construct()
     {
         $this->troop = new ArrayCollection();
-        $this->effects = new ArrayCollection();
+        $this->limbEffects = new ArrayCollection();
+        $this->limbSkills = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -228,25 +240,61 @@ class Limb
     }
 
     /**
-     * @return Collection<int, Effect>
+     * @return Collection<int, LimbEffect>
      */
-    public function getEffects(): Collection
+    public function getLimbEffects(): Collection
     {
-        return $this->effects;
+        return $this->limbEffects;
     }
 
-    public function addEffect(Effect $effect): static
+    public function addLimbEffect(LimbEffect $limbEffect): static
     {
-        if (!$this->effects->contains($effect)) {
-            $this->effects->add($effect);
+        if (!$this->limbEffects->contains($limbEffect)) {
+            $this->limbEffects->add($limbEffect);
+            $limbEffect->setIdLimb($this);
         }
 
         return $this;
     }
 
-    public function removeEffect(Effect $effect): static
+    public function removeLimbEffect(LimbEffect $limbEffect): static
     {
-        $this->effects->removeElement($effect);
+        if ($this->limbEffects->removeElement($limbEffect)) {
+            // set the owning side to null (unless already changed)
+            if ($limbEffect->getIdLimb() === $this) {
+                $limbEffect->setIdLimb(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LimbSkill>
+     */
+    public function getLimbSkills(): Collection
+    {
+        return $this->limbSkills;
+    }
+
+    public function addLimbSkill(LimbSkill $limbSkill): static
+    {
+        if (!$this->limbSkills->contains($limbSkill)) {
+            $this->limbSkills->add($limbSkill);
+            $limbSkill->setIdLimb($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLimbSkill(LimbSkill $limbSkill): static
+    {
+        if ($this->limbSkills->removeElement($limbSkill)) {
+            // set the owning side to null (unless already changed)
+            if ($limbSkill->getIdLimb() === $this) {
+                $limbSkill->setIdLimb(null);
+            }
+        }
 
         return $this;
     }

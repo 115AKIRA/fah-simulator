@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SkillRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SkillRepository::class)]
@@ -24,29 +26,48 @@ class Skill
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?scope $scope = null;
+    private ?Scope $scope = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?occasion $occasion = null;
+    private ?Occasion $occasion = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?element $element = null;
+    private ?Element $element = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?damagetype $damage_type = null;
+    private ?DamageType $damage_type = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?hittype $hit_type = null;
+    private ?HitType $hit_type = null;
 
     #[ORM\Column]
     private ?int $success_rate = null;
 
     #[ORM\Column]
     private ?int $repeat_action = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $formula = null;
+
+    /**
+     * @var Collection<int, LimbSkill>
+     */
+    #[ORM\OneToMany(targetEntity: LimbSkill::class, mappedBy: 'id_skill', orphanRemoval: true)]
+    private Collection $limbSkills;
+
+    public function __construct()
+    {
+        $this->limbSkills = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
     public function getId(): ?int
     {
@@ -89,60 +110,60 @@ class Skill
         return $this;
     }
 
-    public function getScope(): ?scope
+    public function getScope(): ?Scope
     {
         return $this->scope;
     }
 
-    public function setScope(?scope $scope): static
+    public function setScope(?Scope $scope): static
     {
         $this->scope = $scope;
 
         return $this;
     }
 
-    public function getOccasion(): ?occasion
+    public function getOccasion(): ?Occasion
     {
         return $this->occasion;
     }
 
-    public function setOccasion(?occasion $occasion): static
+    public function setOccasion(?Occasion $occasion): static
     {
         $this->occasion = $occasion;
 
         return $this;
     }
 
-    public function getElement(): ?element
+    public function getElement(): ?Element
     {
         return $this->element;
     }
 
-    public function setElement(?element $element): static
+    public function setElement(?Element $element): static
     {
         $this->element = $element;
 
         return $this;
     }
 
-    public function getDamageType(): ?damagetype
+    public function getDamageType(): ?DamageType
     {
         return $this->damage_type;
     }
 
-    public function setDamageType(?damagetype $damage_type): static
+    public function setDamageType(?DamageType $damage_type): static
     {
         $this->damage_type = $damage_type;
 
         return $this;
     }
 
-    public function getHitType(): ?hittype
+    public function getHitType(): ?HitType
     {
         return $this->hit_type;
     }
 
-    public function setHitType(?hittype $hit_type): static
+    public function setHitType(?HitType $hit_type): static
     {
         $this->hit_type = $hit_type;
 
@@ -169,6 +190,48 @@ class Skill
     public function setRepeatAction(int $repeat_action): static
     {
         $this->repeat_action = $repeat_action;
+
+        return $this;
+    }
+
+    public function getFormula(): ?string
+    {
+        return $this->formula;
+    }
+
+    public function setFormula(string $formula): static
+    {
+        $this->formula = $formula;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LimbSkill>
+     */
+    public function getLimbSkills(): Collection
+    {
+        return $this->limbSkills;
+    }
+
+    public function addLimbSkill(LimbSkill $limbSkill): static
+    {
+        if (!$this->limbSkills->contains($limbSkill)) {
+            $this->limbSkills->add($limbSkill);
+            $limbSkill->setIdSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLimbSkill(LimbSkill $limbSkill): static
+    {
+        if ($this->limbSkills->removeElement($limbSkill)) {
+            // set the owning side to null (unless already changed)
+            if ($limbSkill->getIdSkill() === $this) {
+                $limbSkill->setIdSkill(null);
+            }
+        }
 
         return $this;
     }

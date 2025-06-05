@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArmorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArmorRepository::class)]
@@ -24,7 +26,7 @@ class Armor
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?armortype $armor_type = null;
+    private ?ArmorType $armor_type = null;
 
     #[ORM\Column]
     private ?int $blunt_res = null;
@@ -43,7 +45,18 @@ class Armor
 
     #[ORM\ManyToOne(inversedBy: 'armors')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?equipmenttype $equipment_type = null;
+    private ?EquipmentType $equipment_type = null;
+
+    /**
+     * @var Collection<int, ArmorEffect>
+     */
+    #[ORM\OneToMany(targetEntity: ArmorEffect::class, mappedBy: 'id_armor', orphanRemoval: true)]
+    private Collection $armorEffects;
+
+    public function __construct()
+    {
+        $this->armorEffects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,12 +99,12 @@ class Armor
         return $this;
     }
 
-    public function getArmorType(): ?armortype
+    public function getArmorType(): ?ArmorType
     {
         return $this->armor_type;
     }
 
-    public function setArmorType(?armortype $armor_type): static
+    public function setArmorType(?ArmorType $armor_type): static
     {
         $this->armor_type = $armor_type;
 
@@ -158,14 +171,44 @@ class Armor
         return $this;
     }
 
-    public function getEquipmentType(): ?equipmenttype
+    public function getEquipmentType(): ?EquipmentType
     {
         return $this->equipment_type;
     }
 
-    public function setEquipmentType(?equipmenttype $equipment_type): static
+    public function setEquipmentType(?EquipmentType $equipment_type): static
     {
         $this->equipment_type = $equipment_type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArmorEffect>
+     */
+    public function getArmorEffects(): Collection
+    {
+        return $this->armorEffects;
+    }
+
+    public function addArmorEffect(ArmorEffect $armorEffect): static
+    {
+        if (!$this->armorEffects->contains($armorEffect)) {
+            $this->armorEffects->add($armorEffect);
+            $armorEffect->setIdArmor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArmorEffect(ArmorEffect $armorEffect): static
+    {
+        if ($this->armorEffects->removeElement($armorEffect)) {
+            // set the owning side to null (unless already changed)
+            if ($armorEffect->getIdArmor() === $this) {
+                $armorEffect->setIdArmor(null);
+            }
+        }
 
         return $this;
     }

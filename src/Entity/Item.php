@@ -22,6 +22,31 @@ class Item
     #[ORM\Column(length: 255)]
     private ?string $icon = null;
 
+    #[ORM\Column]
+    private ?bool $is_consumed = null;
+
+    #[ORM\Column]
+    private ?int $success_rate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Scope $scope_id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Element $element_id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?DamageType $damage_type_id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?HitType $hit_type_id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $formula = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +84,90 @@ class Item
     public function setIcon(string $icon): static
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function isConsumed(): ?bool
+    {
+        return $this->is_consumed;
+    }
+
+    public function setIsConsumed(bool $is_consumed): static
+    {
+        $this->is_consumed = $is_consumed;
+
+        return $this;
+    }
+
+    public function getSuccessRate(): ?int
+    {
+        return $this->success_rate;
+    }
+
+    public function setSuccessRate(int $success_rate): static
+    {
+        $this->success_rate = $success_rate;
+
+        return $this;
+    }
+
+    public function getScopeId(): ?Scope
+    {
+        return $this->scope_id;
+    }
+
+    public function setScopeId(?Scope $scope_id): static
+    {
+        $this->scope_id = $scope_id;
+
+        return $this;
+    }
+
+    public function getElementId(): ?Element
+    {
+        return $this->element_id;
+    }
+
+    public function setElementId(?Element $element_id): static
+    {
+        $this->element_id = $element_id;
+
+        return $this;
+    }
+
+    public function getDamageTypeId(): ?DamageType
+    {
+        return $this->damage_type_id;
+    }
+
+    public function setDamageTypeId(?DamageType $damage_type_id): static
+    {
+        $this->damage_type_id = $damage_type_id;
+
+        return $this;
+    }
+
+    public function getHitTypeId(): ?HitType
+    {
+        return $this->hit_type_id;
+    }
+
+    public function setHitTypeId(?HitType $hit_type_id): static
+    {
+        $this->hit_type_id = $hit_type_id;
+
+        return $this;
+    }
+
+    public function getFormula(): ?string
+    {
+        return $this->formula;
+    }
+
+    public function setFormula(string $formula): static
+    {
+        $this->formula = $formula;
 
         return $this;
     }

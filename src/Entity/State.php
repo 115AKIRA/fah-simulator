@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StateRepository::class)]
@@ -27,6 +29,17 @@ class State
 
     #[ORM\Column(nullable: true)]
     private ?int $max_duration = null;
+
+    /**
+     * @var Collection<int, StateEffect>
+     */
+    #[ORM\OneToMany(targetEntity: StateEffect::class, mappedBy: 'id_state', orphanRemoval: true)]
+    private Collection $stateEffects;
+
+    public function __construct()
+    {
+        $this->stateEffects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,4 +105,35 @@ class State
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, StateEffect>
+     */
+    public function getStateEffects(): Collection
+    {
+        return $this->stateEffects;
+    }
+
+    public function addStateEffect(StateEffect $stateEffect): static
+    {
+        if (!$this->stateEffects->contains($stateEffect)) {
+            $this->stateEffects->add($stateEffect);
+            $stateEffect->setIdState($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStateEffect(StateEffect $stateEffect): static
+    {
+        if ($this->stateEffects->removeElement($stateEffect)) {
+            // set the owning side to null (unless already changed)
+            if ($stateEffect->getIdState() === $this) {
+                $stateEffect->setIdState(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

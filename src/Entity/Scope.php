@@ -18,9 +18,21 @@ class Scope
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, Item>
+     */
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'scope_id')]
+    private Collection $items;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->items = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -36,6 +48,36 @@ class Scope
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setScopeId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getScopeId() === $this) {
+                $item->setScopeId(null);
+            }
+        }
 
         return $this;
     }

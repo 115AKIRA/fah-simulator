@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Enemy List {% endblock %}
+
+{% block body %}
+
+    <section>
+
+        <h2> List of troups </h2>
+
+        <table class="troop-table">
+
+            <tbody>
+
+                <tr>
+
+                    <th> Name </th>
+                    <th> Sprite </th>
+                    <th> Search </th>
+                    <th> Steal </th>
+
+                </tr>
+
+                {% for tr in troops %}
+
+                    <tr>
+
+                        <td> <a href="/enemy/{{ tr.id }}"> {{ tr.name }} </a> </td>
+                        <td> <img src={{ tr.image }}>
+                        <td> todo </td>
+                        <td> todo </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+ 
+    </section>
+
+{% endblock %}
