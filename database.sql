@@ -1,62 +1,60 @@
--- MySQL dump 10.13  Distrib 8.4.5, for Linux (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.2
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: simulator
--- ------------------------------------------------------
--- Server version	8.4.5
+-- Hôte : localhost
+-- Généré le : jeu. 05 juin 2025 à 08:47
+-- Version du serveur : 8.4.5
+-- Version de PHP : 8.2.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Current Database: `simulator`
+-- Base de données : `simulator`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `simulator` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `simulator`;
+-- --------------------------------------------------------
 
 --
--- Table structure for table `accessory`
+-- Structure de la table `accessory`
 --
 
-DROP TABLE IF EXISTS `accessory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accessory` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `accessory`
+-- Structure de la table `accessory_effect`
 --
 
-LOCK TABLES `accessory` WRITE;
-/*!40000 ALTER TABLE `accessory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `accessory` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `accessory_effect` (
+  `id_accessory_id` int NOT NULL,
+  `id_effect_id` int NOT NULL,
+  `value` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `armor`
+-- Structure de la table `armor`
 --
 
-DROP TABLE IF EXISTS `armor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `armor_type_id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -66,252 +64,253 @@ CREATE TABLE `armor` (
   `piercing_res` int NOT NULL,
   `fire_res` int NOT NULL,
   `otherworldly_res` int NOT NULL,
-  `equipment_type_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_BF27FEFCA5BF8724` (`armor_type_id`),
-  KEY `IDX_BF27FEFCB337437C` (`equipment_type_id`),
-  CONSTRAINT `FK_BF27FEFCA5BF8724` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`id`),
-  CONSTRAINT `FK_BF27FEFCB337437C` FOREIGN KEY (`equipment_type_id`) REFERENCES `equipment_type` (`id`)
+  `equipment_type_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `armor`
+-- Structure de la table `armor_effect`
 --
 
-LOCK TABLES `armor` WRITE;
-/*!40000 ALTER TABLE `armor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `armor` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `armor_effect` (
+  `id_armor_id` int NOT NULL,
+  `id_effect_id` int NOT NULL,
+  `value` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `armor_type`
+-- Structure de la table `armor_restrict_type`
 --
 
-DROP TABLE IF EXISTS `armor_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `armor_restrict_type` (
+  `id` int NOT NULL,
+  `armor_restrict` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `armor_restrict_type`
+--
+
+INSERT INTO `armor_restrict_type` (`id`, `armor_restrict`) VALUES
+(1, 'girl'),
+(2, 'no_armor'),
+(3, 'enki'),
+(4, 'no_restrict');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `armor_type`
+--
+
 CREATE TABLE `armor_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `armor_type`
+-- Déchargement des données de la table `armor_type`
 --
 
-LOCK TABLES `armor_type` WRITE;
-/*!40000 ALTER TABLE `armor_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `armor_type` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `armor_type` (`id`, `name`) VALUES
+(1, 'None'),
+(2, 'Light Armor'),
+(3, 'Heavy Armor'),
+(4, 'Small Shield');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `character`
+-- Structure de la table `character`
 --
 
-DROP TABLE IF EXISTS `character`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `character` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `is_armor_restrict` tinyint(1) NOT NULL,
-  `is_weapon_restrict` tinyint(1) NOT NULL,
+  `id` int NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `back_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attack` int NOT NULL,
   `agility` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `armor_restrict_type_id` int NOT NULL,
+  `weapon_restrict_type_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `character`
+-- Structure de la table `damage_type`
 --
 
-LOCK TABLES `character` WRITE;
-/*!40000 ALTER TABLE `character` DISABLE KEYS */;
-/*!40000 ALTER TABLE `character` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `damage_type`
---
-
-DROP TABLE IF EXISTS `damage_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `damage_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `damage_type`
+-- Déchargement des données de la table `damage_type`
 --
 
-LOCK TABLES `damage_type` WRITE;
-/*!40000 ALTER TABLE `damage_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `damage_type` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `damage_type` (`id`, `name`) VALUES
+(1, 'None'),
+(2, 'HP Damage'),
+(3, 'MP Damage'),
+(4, 'HP Recover'),
+(5, 'MP Recover'),
+(6, 'HP Drain'),
+(7, 'MP Drain');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `doctrine_migration_versions`
+-- Structure de la table `doctrine_migration_versions`
 --
 
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctrine_migration_versions` (
   `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
-  PRIMARY KEY (`version`)
+  `execution_time` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `doctrine_migration_versions`
+-- Déchargement des données de la table `doctrine_migration_versions`
 --
 
-LOCK TABLES `doctrine_migration_versions` WRITE;
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20250507091404','2025-05-07 09:14:47',81),('DoctrineMigrations\\Version20250507091558','2025-05-07 09:16:11',80),('DoctrineMigrations\\Version20250509071521','2025-05-09 07:15:47',210),('DoctrineMigrations\\Version20250509071653','2025-05-09 07:16:57',140),('DoctrineMigrations\\Version20250509072124','2025-05-09 07:21:28',35),('DoctrineMigrations\\Version20250509072328','2025-05-09 07:23:32',23),('DoctrineMigrations\\Version20250509072945','2025-05-09 07:29:48',149),('DoctrineMigrations\\Version20250509073432','2025-05-09 07:34:36',146),('DoctrineMigrations\\Version20250509073816','2025-05-09 07:38:20',646),('DoctrineMigrations\\Version20250509074520','2025-05-09 07:45:24',152),('DoctrineMigrations\\Version20250509074801','2025-05-09 07:48:04',33),('DoctrineMigrations\\Version20250509075045','2025-05-09 07:50:48',53),('DoctrineMigrations\\Version20250509080141','2025-05-09 08:01:44',333),('DoctrineMigrations\\Version20250509080524','2025-05-09 08:05:28',874),('DoctrineMigrations\\Version20250509084019','2025-05-09 08:40:29',1184);
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
+('DoctrineMigrations\\Version20250604221928', NULL, NULL),
+('DoctrineMigrations\\Version20250604230951', '2025-06-04 23:10:02', 203),
+('DoctrineMigrations\\Version20250605003415', '2025-06-05 00:35:34', 157),
+('DoctrineMigrations\\Version20250605003755', '2025-06-05 00:38:03', 222),
+('DoctrineMigrations\\Version20250605004039', '2025-06-05 00:40:47', 147),
+('DoctrineMigrations\\Version20250605004501', '2025-06-05 00:45:04', 45),
+('DoctrineMigrations\\Version20250605004959', '2025-06-05 00:50:08', 179),
+('DoctrineMigrations\\Version20250605005453', '2025-06-05 00:54:58', 141),
+('DoctrineMigrations\\Version20250605005823', '2025-06-05 00:58:26', 151),
+('DoctrineMigrations\\Version20250605005850', '2025-06-05 00:58:54', 179),
+('DoctrineMigrations\\Version20250605010102', '2025-06-05 01:01:09', 135),
+('DoctrineMigrations\\Version20250605011052', '2025-06-05 01:10:56', 341),
+('DoctrineMigrations\\Version20250605011458', '2025-06-05 01:15:05', 225),
+('DoctrineMigrations\\Version20250605011629', '2025-06-05 01:16:33', 49),
+('DoctrineMigrations\\Version20250605014408', '2025-06-05 01:44:12', 222),
+('DoctrineMigrations\\Version20250605025215', '2025-06-05 02:52:20', 56),
+('DoctrineMigrations\\Version20250605071938', '2025-06-05 07:19:44', 71),
+('DoctrineMigrations\\Version20250605072014', '2025-06-05 07:20:19', 54);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `effect`
+-- Structure de la table `effect`
 --
 
-DROP TABLE IF EXISTS `effect`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `effect` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_dot` tinyint(1) NOT NULL,
-  `value` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `value` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `effect`
+-- Déchargement des données de la table `effect`
 --
 
-LOCK TABLES `effect` WRITE;
-/*!40000 ALTER TABLE `effect` DISABLE KEYS */;
-/*!40000 ALTER TABLE `effect` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `effect` (`id`, `name`, `description`, `is_dot`, `value`) VALUES
+(1, 'Severe DoT', 'HP Regeneration -10%', 1, -10);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `element`
+-- Structure de la table `element`
 --
 
-DROP TABLE IF EXISTS `element`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `element` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `element`
+-- Déchargement des données de la table `element`
 --
 
-LOCK TABLES `element` WRITE;
-/*!40000 ALTER TABLE `element` DISABLE KEYS */;
-/*!40000 ALTER TABLE `element` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `element` (`id`, `name`) VALUES
+(1, 'Typeless'),
+(2, 'Slashing'),
+(3, 'Piercing'),
+(4, 'Fire'),
+(5, 'Otherworldly'),
+(6, 'Blunt');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `equipment_type`
+-- Structure de la table `equipment_type`
 --
 
-DROP TABLE IF EXISTS `equipment_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `equipment_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `equipment_type`
+-- Déchargement des données de la table `equipment_type`
 --
 
-LOCK TABLES `equipment_type` WRITE;
-/*!40000 ALTER TABLE `equipment_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `equipment_type` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `equipment_type` (`id`, `name`) VALUES
+(1, 'Shield'),
+(2, 'Head'),
+(3, 'Body'),
+(4, 'Accessory');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `hit_type`
+-- Structure de la table `hit_type`
 --
 
-DROP TABLE IF EXISTS `hit_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hit_type` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hit_type`
+-- Déchargement des données de la table `hit_type`
 --
 
-LOCK TABLES `hit_type` WRITE;
-/*!40000 ALTER TABLE `hit_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hit_type` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `hit_type` (`id`, `name`) VALUES
+(1, 'Certain hit'),
+(2, 'Physical Attack'),
+(3, 'Magical Attack');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `item`
+-- Structure de la table `item`
 --
 
-DROP TABLE IF EXISTS `item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `item` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `scope_id_id` int NOT NULL,
+  `element_id_id` int NOT NULL,
+  `damage_type_id_id` int NOT NULL,
+  `hit_type_id_id` int NOT NULL,
+  `is_consumed` tinyint(1) NOT NULL,
+  `success_rate` int NOT NULL,
+  `formula` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `item`
+-- Structure de la table `limb`
 --
 
-LOCK TABLES `item` WRITE;
-/*!40000 ALTER TABLE `item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `limb`
---
-
-DROP TABLE IF EXISTS `limb`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `limb` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max_hp` int NOT NULL,
   `blunt_res` int NOT NULL,
@@ -322,162 +321,159 @@ CREATE TABLE `limb` (
   `evasion` int NOT NULL,
   `magical_evasion` int NOT NULL,
   `hard_max_hp` int NOT NULL,
-  `accuracy` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `limb`
---
-
-LOCK TABLES `limb` WRITE;
-/*!40000 ALTER TABLE `limb` DISABLE KEYS */;
-INSERT INTO `limb` VALUES (1,'Guard [torso]',1300,100,115,100,100,100,5,0,2500,95),(2,'Guard [head]',20,100,115,100,100,100,55,40,20,95),(3,'Guard [right arm]',20,100,115,100,100,100,5,0,250,95),(4,'Guard [left arm]',20,100,115,100,100,100,5,0,250,95),(5,'Guard [stinger]',20,100,115,100,100,100,5,0,250,95),(6,'Guard [left leg]',20,100,115,100,100,100,5,0,20,95),(7,'Guard [right leg]',20,100,115,100,100,100,5,0,20,95);
-/*!40000 ALTER TABLE `limb` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `limb_effect`
---
-
-DROP TABLE IF EXISTS `limb_effect`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `limb_effect` (
-  `limb_id` int NOT NULL,
-  `effect_id` int NOT NULL,
-  PRIMARY KEY (`limb_id`,`effect_id`),
-  KEY `IDX_F166F293970C372B` (`limb_id`),
-  KEY `IDX_F166F293F5E9B83B` (`effect_id`),
-  CONSTRAINT `FK_F166F293970C372B` FOREIGN KEY (`limb_id`) REFERENCES `limb` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_F166F293F5E9B83B` FOREIGN KEY (`effect_id`) REFERENCES `effect` (`id`) ON DELETE CASCADE
+  `accuracy` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `limb_effect`
+-- Déchargement des données de la table `limb`
 --
 
-LOCK TABLES `limb_effect` WRITE;
-/*!40000 ALTER TABLE `limb_effect` DISABLE KEYS */;
-/*!40000 ALTER TABLE `limb_effect` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `limb` (`id`, `name`, `max_hp`, `blunt_res`, `slashing_res`, `piercing_res`, `fire_res`, `otherworldly_res`, `evasion`, `magical_evasion`, `hard_max_hp`, `accuracy`) VALUES
+(1, 'Guard [torso]', 1300, 100, 115, 100, 100, 100, 5, 0, 2500, 95),
+(2, 'Guard [head]', 20, 100, 115, 100, 100, 100, 55, 40, 20, 95),
+(3, 'Guard [right arm]', 20, 100, 115, 100, 100, 100, 5, 0, 250, 95),
+(4, 'Guard [left arm]', 20, 100, 115, 100, 100, 100, 5, 0, 250, 95),
+(5, 'Guard [stinger]', 20, 100, 115, 100, 100, 100, 5, 0, 250, 95),
+(6, 'Guard [left leg]', 20, 100, 115, 100, 100, 100, 5, 0, 20, 95),
+(7, 'Guard [right leg]', 20, 100, 115, 100, 100, 100, 5, 0, 20, 95);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `limb_troop`
+-- Structure de la table `limb_effect`
 --
 
-DROP TABLE IF EXISTS `limb_troop`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `limb_effect` (
+  `id_limb_id` int NOT NULL,
+  `id_effect_id` int NOT NULL,
+  `value` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `limb_skill`
+--
+
+CREATE TABLE `limb_skill` (
+  `id_limb_id` int NOT NULL,
+  `id_skill_id` int NOT NULL,
+  `rating` int NOT NULL,
+  `skill_trigger` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `skill_occurence` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `limb_skill`
+--
+
+INSERT INTO `limb_skill` (`id_limb_id`, `id_skill_id`, `rating`, `skill_trigger`, `skill_occurence`, `id`) VALUES
+(4, 1, 5, 'Always', 1, 1),
+(3, 2, 99, 'Every third turn, starting on turn 2  (failed coinflip)', 1, 2),
+(5, 5, 5, 'Always', 2, 3),
+(5, 3, 3, 'Always', 1, 4),
+(1, 4, 5, 'If armless', 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `limb_troop`
+--
+
 CREATE TABLE `limb_troop` (
   `limb_id` int NOT NULL,
-  `troop_id` int NOT NULL,
-  PRIMARY KEY (`limb_id`,`troop_id`),
-  KEY `IDX_4E014DA2970C372B` (`limb_id`),
-  KEY `IDX_4E014DA2263060AC` (`troop_id`),
-  CONSTRAINT `FK_4E014DA2263060AC` FOREIGN KEY (`troop_id`) REFERENCES `troop` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_4E014DA2970C372B` FOREIGN KEY (`limb_id`) REFERENCES `limb` (`id`) ON DELETE CASCADE
+  `troop_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `limb_troop`
+-- Déchargement des données de la table `limb_troop`
 --
 
-LOCK TABLES `limb_troop` WRITE;
-/*!40000 ALTER TABLE `limb_troop` DISABLE KEYS */;
-INSERT INTO `limb_troop` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1);
-/*!40000 ALTER TABLE `limb_troop` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `limb_troop` (`limb_id`, `troop_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `messenger_messages`
+-- Structure de la table `messenger_messages`
 --
 
-DROP TABLE IF EXISTS `messenger_messages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `messenger_messages` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL,
   `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-  PRIMARY KEY (`id`),
-  KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
-  KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
-  KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
+  `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `messenger_messages`
+-- Structure de la table `occasion`
 --
 
-LOCK TABLES `messenger_messages` WRITE;
-/*!40000 ALTER TABLE `messenger_messages` DISABLE KEYS */;
-/*!40000 ALTER TABLE `messenger_messages` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `occasion`
---
-
-DROP TABLE IF EXISTS `occasion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `occasion` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `occasion`
+-- Déchargement des données de la table `occasion`
 --
 
-LOCK TABLES `occasion` WRITE;
-/*!40000 ALTER TABLE `occasion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `occasion` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `occasion` (`id`, `name`) VALUES
+(1, 'Always'),
+(2, 'Battle Screen'),
+(3, 'Menu Screen'),
+(4, 'Never');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `scope`
+-- Structure de la table `scope`
 --
 
-DROP TABLE IF EXISTS `scope`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `scope` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `scope`
+-- Déchargement des données de la table `scope`
 --
 
-LOCK TABLES `scope` WRITE;
-/*!40000 ALTER TABLE `scope` DISABLE KEYS */;
-/*!40000 ALTER TABLE `scope` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `scope` (`id`, `name`) VALUES
+(1, 'None'),
+(2, '1 Enemy'),
+(3, 'All enemies'),
+(4, '1 Random Enemy'),
+(5, '2 Random Enemies'),
+(6, '3 Random Enemies'),
+(7, '4 Random Enemies'),
+(8, '1 Ally'),
+(9, 'All Allies'),
+(10, '1 Ally (dead)'),
+(11, 'All Allies (dead)'),
+(12, 'The User');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `skill`
+-- Structure de la table `skill`
 --
 
-DROP TABLE IF EXISTS `skill`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `skill` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `scope_id` int NOT NULL,
   `occasion_id` int NOT NULL,
   `element_id` int NOT NULL,
@@ -488,116 +484,607 @@ CREATE TABLE `skill` (
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `success_rate` int NOT NULL,
   `repeat_action` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_5E3DE477682B5931` (`scope_id`),
-  KEY `IDX_5E3DE4774034998F` (`occasion_id`),
-  KEY `IDX_5E3DE4771F1F2A24` (`element_id`),
-  KEY `IDX_5E3DE47741E13755` (`damage_type_id`),
-  KEY `IDX_5E3DE477D50BC975` (`hit_type_id`),
-  CONSTRAINT `FK_5E3DE4771F1F2A24` FOREIGN KEY (`element_id`) REFERENCES `element` (`id`),
-  CONSTRAINT `FK_5E3DE4774034998F` FOREIGN KEY (`occasion_id`) REFERENCES `occasion` (`id`),
-  CONSTRAINT `FK_5E3DE47741E13755` FOREIGN KEY (`damage_type_id`) REFERENCES `damage_type` (`id`),
-  CONSTRAINT `FK_5E3DE477682B5931` FOREIGN KEY (`scope_id`) REFERENCES `scope` (`id`),
-  CONSTRAINT `FK_5E3DE477D50BC975` FOREIGN KEY (`hit_type_id`) REFERENCES `hit_type` (`id`)
+  `formula` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `skill`
+-- Déchargement des données de la table `skill`
 --
 
-LOCK TABLES `skill` WRITE;
-/*!40000 ALTER TABLE `skill` DISABLE KEYS */;
-/*!40000 ALTER TABLE `skill` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `skill` (`id`, `scope_id`, `occasion_id`, `element_id`, `damage_type_id`, `hit_type_id`, `name`, `is_enemy_only`, `description`, `success_rate`, `repeat_action`, `formula`) VALUES
+(1, 2, 2, 2, 2, 2, 'Hack', 1, 'guard\'s cleaver arm attack', 90, 1, '35'),
+(2, 2, 2, 6, 2, 2, 'Mad rush', 1, 'guard\'s empty hand coinflip attack', 90, 5, '22'),
+(3, 2, 1, 3, 2, 1, 'Stringer thrust', 1, 'guard\'s stinger attack', 100, 1, '45'),
+(4, 2, 1, 6, 2, 1, 'Tackle', 1, 'guard\'s torso attack when armless', 100, 1, '20'),
+(5, 1, 1, 1, 1, 1, 'The stinger is pulsating...', 1, 'guard\'s stinger non-attack attack', 100, 1, '0');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `state`
+-- Structure de la table `state`
 --
 
-DROP TABLE IF EXISTS `state`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `state` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_duration` int DEFAULT NULL,
-  `max_duration` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `max_duration` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `state`
+-- Structure de la table `state_effect`
 --
 
-LOCK TABLES `state` WRITE;
-/*!40000 ALTER TABLE `state` DISABLE KEYS */;
-/*!40000 ALTER TABLE `state` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `state_effect` (
+  `id_state_id` int NOT NULL,
+  `id_effect_id` int NOT NULL,
+  `value` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `troop`
+-- Structure de la table `troop`
 --
 
-DROP TABLE IF EXISTS `troop`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `troop` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_die_at_end_of_turn` tinyint(1) NOT NULL,
-  `torso_threshhold` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `torso_threshhold` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `troop`
+-- Déchargement des données de la table `troop`
 --
 
-LOCK TABLES `troop` WRITE;
-/*!40000 ALTER TABLE `troop` DISABLE KEYS */;
-INSERT INTO `troop` VALUES (1,'Guard','https://fearandhunger.wiki.gg/images/7/74/Guard.png?519ff8=&format=original',1,75);
-/*!40000 ALTER TABLE `troop` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `troop` (`id`, `name`, `image`, `is_die_at_end_of_turn`, `torso_threshhold`) VALUES
+(1, 'Guard', 'https://fearandhunger.wiki.gg/images/7/74/Guard.png?519ff8=&format=original', 1, 75);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `weapon`
+-- Structure de la table `weapon`
 --
 
-DROP TABLE IF EXISTS `weapon`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `weapon` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attack` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `attack` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `weapon`
+-- Déchargement des données de la table `weapon`
 --
 
-LOCK TABLES `weapon` WRITE;
-/*!40000 ALTER TABLE `weapon` DISABLE KEYS */;
-/*!40000 ALTER TABLE `weapon` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `weapon` (`id`, `name`, `description`, `icon`, `attack`) VALUES
+(1, 'Short sword', 'Short iron sword. Blade is a bit worn out, but the sword itself is easy and quick to handle.', 'https://fearandhunger.wiki.gg/images/3/3b/Short_sword_small.png?4817a2&format=original', 10);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `weapon_effect`
+--
+
+CREATE TABLE `weapon_effect` (
+  `id_weapon_id` int NOT NULL,
+  `id_effect_id` int NOT NULL,
+  `value` int NOT NULL,
+  `id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `weapon_element`
+--
+
+CREATE TABLE `weapon_element` (
+  `weapon_id` int NOT NULL,
+  `element_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `weapon_element`
+--
+
+INSERT INTO `weapon_element` (`weapon_id`, `element_id`) VALUES
+(1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `weapon_restrict_type`
+--
+
+CREATE TABLE `weapon_restrict_type` (
+  `id` int NOT NULL,
+  `weapon_restrict` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `weapon_restrict_type`
+--
+
+INSERT INTO `weapon_restrict_type` (`id`, `weapon_restrict`) VALUES
+(1, 'girl'),
+(2, 'enki'),
+(3, 'ghouls'),
+(4, 'skeleton'),
+(5, 'no_restrict');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `accessory`
+--
+ALTER TABLE `accessory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `accessory_effect`
+--
+ALTER TABLE `accessory_effect`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_603C4B8A429B90A` (`id_accessory_id`),
+  ADD KEY `IDX_603C4B8A75DC041C` (`id_effect_id`);
+
+--
+-- Index pour la table `armor`
+--
+ALTER TABLE `armor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_BF27FEFCA5BF8724` (`armor_type_id`),
+  ADD KEY `IDX_BF27FEFCB337437C` (`equipment_type_id`);
+
+--
+-- Index pour la table `armor_effect`
+--
+ALTER TABLE `armor_effect`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F5E5F36DA571DAF6` (`id_armor_id`),
+  ADD KEY `IDX_F5E5F36D75DC041C` (`id_effect_id`);
+
+--
+-- Index pour la table `armor_restrict_type`
+--
+ALTER TABLE `armor_restrict_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `armor_type`
+--
+ALTER TABLE `armor_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `character`
+--
+ALTER TABLE `character`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_937AB034A5DB102C` (`armor_restrict_type_id`),
+  ADD KEY `IDX_937AB0347200557` (`weapon_restrict_type_id`);
+
+--
+-- Index pour la table `damage_type`
+--
+ALTER TABLE `damage_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `doctrine_migration_versions`
+--
+ALTER TABLE `doctrine_migration_versions`
+  ADD PRIMARY KEY (`version`);
+
+--
+-- Index pour la table `effect`
+--
+ALTER TABLE `effect`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `element`
+--
+ALTER TABLE `element`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `equipment_type`
+--
+ALTER TABLE `equipment_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `hit_type`
+--
+ALTER TABLE `hit_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `item`
+--
+ALTER TABLE `item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_1F1B251E842D55A2` (`scope_id_id`),
+  ADD KEY `IDX_1F1B251EBB66EACE` (`element_id_id`),
+  ADD KEY `IDX_1F1B251E4B3C5BF0` (`damage_type_id_id`),
+  ADD KEY `IDX_1F1B251EB991DAD1` (`hit_type_id_id`);
+
+--
+-- Index pour la table `limb`
+--
+ALTER TABLE `limb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `limb_effect`
+--
+ALTER TABLE `limb_effect`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F166F29349919E5B` (`id_limb_id`),
+  ADD KEY `IDX_F166F29375DC041C` (`id_effect_id`);
+
+--
+-- Index pour la table `limb_skill`
+--
+ALTER TABLE `limb_skill`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_EA91FA9949919E5B` (`id_limb_id`),
+  ADD KEY `IDX_EA91FA9955E2DD7` (`id_skill_id`);
+
+--
+-- Index pour la table `limb_troop`
+--
+ALTER TABLE `limb_troop`
+  ADD PRIMARY KEY (`limb_id`,`troop_id`),
+  ADD KEY `IDX_4E014DA2970C372B` (`limb_id`),
+  ADD KEY `IDX_4E014DA2263060AC` (`troop_id`);
+
+--
+-- Index pour la table `messenger_messages`
+--
+ALTER TABLE `messenger_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
+  ADD KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
+  ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
+
+--
+-- Index pour la table `occasion`
+--
+ALTER TABLE `occasion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `scope`
+--
+ALTER TABLE `scope`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `skill`
+--
+ALTER TABLE `skill`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_5E3DE477682B5931` (`scope_id`),
+  ADD KEY `IDX_5E3DE4774034998F` (`occasion_id`),
+  ADD KEY `IDX_5E3DE4771F1F2A24` (`element_id`),
+  ADD KEY `IDX_5E3DE47741E13755` (`damage_type_id`),
+  ADD KEY `IDX_5E3DE477D50BC975` (`hit_type_id`);
+
+--
+-- Index pour la table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `state_effect`
+--
+ALTER TABLE `state_effect`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_BFA44E5D5503D054` (`id_state_id`),
+  ADD KEY `IDX_BFA44E5D75DC041C` (`id_effect_id`);
+
+--
+-- Index pour la table `troop`
+--
+ALTER TABLE `troop`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `weapon`
+--
+ALTER TABLE `weapon`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `weapon_effect`
+--
+ALTER TABLE `weapon_effect`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_8B95BED5158D9E54` (`id_weapon_id`),
+  ADD KEY `IDX_8B95BED575DC041C` (`id_effect_id`);
+
+--
+-- Index pour la table `weapon_element`
+--
+ALTER TABLE `weapon_element`
+  ADD PRIMARY KEY (`weapon_id`,`element_id`),
+  ADD KEY `IDX_E4771E7D95B82273` (`weapon_id`),
+  ADD KEY `IDX_E4771E7D1F1F2A24` (`element_id`);
+
+--
+-- Index pour la table `weapon_restrict_type`
+--
+ALTER TABLE `weapon_restrict_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `accessory`
+--
+ALTER TABLE `accessory`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `accessory_effect`
+--
+ALTER TABLE `accessory_effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `armor`
+--
+ALTER TABLE `armor`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `armor_effect`
+--
+ALTER TABLE `armor_effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `armor_restrict_type`
+--
+ALTER TABLE `armor_restrict_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `armor_type`
+--
+ALTER TABLE `armor_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `character`
+--
+ALTER TABLE `character`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `damage_type`
+--
+ALTER TABLE `damage_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `effect`
+--
+ALTER TABLE `effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `element`
+--
+ALTER TABLE `element`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT pour la table `equipment_type`
+--
+ALTER TABLE `equipment_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `hit_type`
+--
+ALTER TABLE `hit_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `item`
+--
+ALTER TABLE `item`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `limb`
+--
+ALTER TABLE `limb`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `limb_effect`
+--
+ALTER TABLE `limb_effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `limb_skill`
+--
+ALTER TABLE `limb_skill`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `messenger_messages`
+--
+ALTER TABLE `messenger_messages`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `occasion`
+--
+ALTER TABLE `occasion`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `scope`
+--
+ALTER TABLE `scope`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT pour la table `skill`
+--
+ALTER TABLE `skill`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `state`
+--
+ALTER TABLE `state`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `state_effect`
+--
+ALTER TABLE `state_effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `troop`
+--
+ALTER TABLE `troop`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `weapon`
+--
+ALTER TABLE `weapon`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `weapon_effect`
+--
+ALTER TABLE `weapon_effect`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `weapon_restrict_type`
+--
+ALTER TABLE `weapon_restrict_type`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `accessory_effect`
+--
+ALTER TABLE `accessory_effect`
+  ADD CONSTRAINT `FK_603C4B8A429B90A` FOREIGN KEY (`id_accessory_id`) REFERENCES `accessory` (`id`),
+  ADD CONSTRAINT `FK_603C4B8A75DC041C` FOREIGN KEY (`id_effect_id`) REFERENCES `effect` (`id`);
+
+--
+-- Contraintes pour la table `armor`
+--
+ALTER TABLE `armor`
+  ADD CONSTRAINT `FK_BF27FEFCA5BF8724` FOREIGN KEY (`armor_type_id`) REFERENCES `armor_type` (`id`),
+  ADD CONSTRAINT `FK_BF27FEFCB337437C` FOREIGN KEY (`equipment_type_id`) REFERENCES `equipment_type` (`id`);
+
+--
+-- Contraintes pour la table `armor_effect`
+--
+ALTER TABLE `armor_effect`
+  ADD CONSTRAINT `FK_F5E5F36D75DC041C` FOREIGN KEY (`id_effect_id`) REFERENCES `effect` (`id`),
+  ADD CONSTRAINT `FK_F5E5F36DA571DAF6` FOREIGN KEY (`id_armor_id`) REFERENCES `armor` (`id`);
+
+--
+-- Contraintes pour la table `character`
+--
+ALTER TABLE `character`
+  ADD CONSTRAINT `FK_937AB0347200557` FOREIGN KEY (`weapon_restrict_type_id`) REFERENCES `weapon_restrict_type` (`id`),
+  ADD CONSTRAINT `FK_937AB034A5DB102C` FOREIGN KEY (`armor_restrict_type_id`) REFERENCES `armor_restrict_type` (`id`);
+
+--
+-- Contraintes pour la table `item`
+--
+ALTER TABLE `item`
+  ADD CONSTRAINT `FK_1F1B251E4B3C5BF0` FOREIGN KEY (`damage_type_id_id`) REFERENCES `damage_type` (`id`),
+  ADD CONSTRAINT `FK_1F1B251E842D55A2` FOREIGN KEY (`scope_id_id`) REFERENCES `scope` (`id`),
+  ADD CONSTRAINT `FK_1F1B251EB991DAD1` FOREIGN KEY (`hit_type_id_id`) REFERENCES `hit_type` (`id`),
+  ADD CONSTRAINT `FK_1F1B251EBB66EACE` FOREIGN KEY (`element_id_id`) REFERENCES `element` (`id`);
+
+--
+-- Contraintes pour la table `limb_effect`
+--
+ALTER TABLE `limb_effect`
+  ADD CONSTRAINT `FK_F166F29349919E5B` FOREIGN KEY (`id_limb_id`) REFERENCES `limb` (`id`),
+  ADD CONSTRAINT `FK_F166F29375DC041C` FOREIGN KEY (`id_effect_id`) REFERENCES `effect` (`id`);
+
+--
+-- Contraintes pour la table `limb_skill`
+--
+ALTER TABLE `limb_skill`
+  ADD CONSTRAINT `FK_EA91FA9949919E5B` FOREIGN KEY (`id_limb_id`) REFERENCES `limb` (`id`),
+  ADD CONSTRAINT `FK_EA91FA9955E2DD7` FOREIGN KEY (`id_skill_id`) REFERENCES `skill` (`id`);
+
+--
+-- Contraintes pour la table `limb_troop`
+--
+ALTER TABLE `limb_troop`
+  ADD CONSTRAINT `FK_4E014DA2263060AC` FOREIGN KEY (`troop_id`) REFERENCES `troop` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_4E014DA2970C372B` FOREIGN KEY (`limb_id`) REFERENCES `limb` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `skill`
+--
+ALTER TABLE `skill`
+  ADD CONSTRAINT `FK_5E3DE4771F1F2A24` FOREIGN KEY (`element_id`) REFERENCES `element` (`id`),
+  ADD CONSTRAINT `FK_5E3DE4774034998F` FOREIGN KEY (`occasion_id`) REFERENCES `occasion` (`id`),
+  ADD CONSTRAINT `FK_5E3DE47741E13755` FOREIGN KEY (`damage_type_id`) REFERENCES `damage_type` (`id`),
+  ADD CONSTRAINT `FK_5E3DE477682B5931` FOREIGN KEY (`scope_id`) REFERENCES `scope` (`id`),
+  ADD CONSTRAINT `FK_5E3DE477D50BC975` FOREIGN KEY (`hit_type_id`) REFERENCES `hit_type` (`id`);
+
+--
+-- Contraintes pour la table `state_effect`
+--
+ALTER TABLE `state_effect`
+  ADD CONSTRAINT `FK_BFA44E5D5503D054` FOREIGN KEY (`id_state_id`) REFERENCES `state` (`id`),
+  ADD CONSTRAINT `FK_BFA44E5D75DC041C` FOREIGN KEY (`id_effect_id`) REFERENCES `effect` (`id`);
+
+--
+-- Contraintes pour la table `weapon_effect`
+--
+ALTER TABLE `weapon_effect`
+  ADD CONSTRAINT `FK_8B95BED5158D9E54` FOREIGN KEY (`id_weapon_id`) REFERENCES `weapon` (`id`),
+  ADD CONSTRAINT `FK_8B95BED575DC041C` FOREIGN KEY (`id_effect_id`) REFERENCES `effect` (`id`);
+
+--
+-- Contraintes pour la table `weapon_element`
+--
+ALTER TABLE `weapon_element`
+  ADD CONSTRAINT `FK_E4771E7D1F1F2A24` FOREIGN KEY (`element_id`) REFERENCES `element` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_E4771E7D95B82273` FOREIGN KEY (`weapon_id`) REFERENCES `weapon` (`id`) ON DELETE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-05-13  6:12:25
