@@ -21,7 +21,8 @@ A lot of entities and attributes can seem weird without knowledge of RPG Maker, 
 * Limb and Troop : A 'limb' is basically a singular enemy, and a 'troop' is a collection of enemies. In Fear & Hunger, limbs can attack you independantly from each other.
 
 ## Architecture specification :
-This project has 3 main pages :
+This project has 4 main pages :
+- The disclaimer page, entrypoint of the application
 - The back office (where the CRUD is)
 - The enemies list (accessible by typing '/enemy' in the path) which shows all the troops in the database
 - The 'fight enemy' page ('/enemy/{id}') where you can see more attributes about an enemy. Currently there is only one enemy, of id = 1;
